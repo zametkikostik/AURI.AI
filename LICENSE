@@ -1,0 +1,46 @@
+AURI.AI Source-Available Proprietary License
+Copyright (c) 2026 AURI.AI Authors. All rights reserved.
+
+PREAMBLE
+This license allows the public to view the source code of AURI.AI for
+evaluation and educational reading only. It does NOT grant any right to
+use, run, deploy, copy, modify, fork, distribute, or create derivative
+works of the Software for any purpose, commercial or non-commercial,
+except as expressly stated below.
+
+1. PERMITTED
+   a. Viewing and reading the source code in this repository.
+   b. Citing or linking to this repository with attribution.
+   c. Private, non-deployed study of the code for learning purposes,
+      without creating a public fork or redistribution.
+
+2. PROHIBITED (without a separate written commercial license)
+   a. Running, deploying, or operating the Software in any environment
+      (including local development intended to power a product or service).
+   b. Forking the repository on GitHub or any other platform.
+   c. Copying, modifying, redistributing, sublicensing, or selling the
+      Software or substantial portions of it.
+   d. Creating derivative works, including competing products based on
+      this codebase.
+   e. Removing or altering copyright, license, or attribution notices.
+
+3. NO TRADEMARK RIGHTS
+   This license does not grant rights to the AURI.AI name, logo, or branding.
+
+4. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+   CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.
+
+5. COMMERCIAL LICENSING
+   To obtain rights to use, deploy, modify, or fork this Software, contact
+   the copyright holders to negotiate a separate commercial license.
+
+6. TERMINATION
+   Any violation of this license automatically terminates the limited
+   viewing rights granted herein.
+
+By accessing this repository you acknowledge that you have read and
+understood these terms.

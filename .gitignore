@@ -1,0 +1,38 @@
+# env & secrets
+.env
+.env.*
+!.env.example
+infra/env/staging.env
+infra/env/prod.env
+.active_slot
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# node
+node_modules/
+frontend/.next/
+frontend/out/
+npm-debug.log*
+
+# ide / os
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# data / backups
+backups/
+*.sql.gz
+uploads/
+tmp/
+
+# docker
+*.log
