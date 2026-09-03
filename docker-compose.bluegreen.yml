@@ -1,0 +1,46 @@
+services:
+  backend-blue:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    profiles: ["bluegreen"]
+    env_file: .env
+    ports:
+      - "8001:8000"
+    environment:
+      APP_ENV: production
+      AI_MODE: strict_private
+      DATABASE_URL: postgresql+asyncpg://auri:auri_secret@postgres:5432/auri
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      S3_ENDPOINT: http://minio:9000
+      QDRANT_HOST: qdrant
+      OLLAMA_BASE_URL: http://ollama:11434
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  backend-green:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    profiles: ["bluegreen"]
+    env_file: .env
+    ports:
+      - "8002:8000"
+    environment:
+      APP_ENV: production
+      AI_MODE: strict_private
+      DATABASE_URL: postgresql+asyncpg://auri:auri_secret@postgres:5432/auri
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      S3_ENDPOINT: http://minio:9000
+      QDRANT_HOST: qdrant
+      OLLAMA_BASE_URL: http://ollama:11434
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
