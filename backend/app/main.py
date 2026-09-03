@@ -25,16 +25,13 @@ async def lifespan(app: FastAPI):
         ai_mode=settings.ai_mode,
         debug=settings.debug,
     )
-
     ollama_status = await check_ollama_health()
     logger.info("ollama_health_check", **ollama_status)
-
     if settings.ai_mode == "strict_private" and ollama_status.get("status") != "ok":
         logger.warning(
             "strict_private_mode_but_ollama_unavailable",
             message="AI features will fail until Ollama is running",
         )
-
     yield
     logger.info("shutting_down_auri")
 
@@ -77,6 +74,7 @@ async def health():
     redis_ok = False
     try:
         import redis.asyncio as aioredis
+
         r = aioredis.from_url(settings.redis_url, decode_responses=True)
         await r.ping()
         await r.aclose()
@@ -110,6 +108,7 @@ async def root():
 async def ready():
     from sqlalchemy import text as sa_text
     from app.core.database import engine
+    from fastapi.responses import JSONResponse
 
     checks = {"database": False, "redis": False}
     try:
@@ -120,6 +119,7 @@ async def ready():
         checks["database"] = False
     try:
         import redis.asyncio as aioredis
+
         r = aioredis.from_url(settings.redis_url, decode_responses=True)
         await r.ping()
         await r.aclose()
@@ -128,7 +128,6 @@ async def ready():
         checks["redis"] = False
 
     ok = all(checks.values())
-    from fastapi.responses import JSONResponse
     return JSONResponse(
         status_code=200 if ok else 503,
         content={"status": "ready" if ok else "not_ready", "checks": checks},
