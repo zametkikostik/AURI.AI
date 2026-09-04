@@ -1,0 +1,6 @@
+apiVersion: v2
+name: auri
+description: AURI.AI — privacy-first AI Meeting Assistant
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

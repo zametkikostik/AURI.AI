@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-worker
+  labels:
+    app: auri-worker
+spec:
+  replicas: {{ .Values.worker.replicaCount }}
+  selector:
+    matchLabels:
+      app: auri-worker
+  template:
+    metadata:
+      labels:
+        app: auri-worker
+    spec:
+      containers:
+        - name: worker
+          image: "{{ .Values.worker.image.repository }}:{{ .Values.worker.image.tag }}"
+          command: ["celery", "-A", "app.workers.celery_app.celery_app", "worker", "-l", "info", "-c", "2"]
+          env:
+            - name: AI_MODE
+              value: {{ .Values.backend.env.AI_MODE | quote }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: database_url
+            - name: CELERY_BROKER_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: celery_broker_url
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}

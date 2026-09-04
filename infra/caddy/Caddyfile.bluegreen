@@ -1,0 +1,18 @@
+{$DOMAIN:auri.example.com} {
+	encode gzip zstd
+	handle /api/* {
+		reverse_proxy {$ACTIVE_UPSTREAM:127.0.0.1:8001}
+	}
+	handle /health {
+		reverse_proxy {$ACTIVE_UPSTREAM:127.0.0.1:8001}
+	}
+	handle /ready {
+		reverse_proxy {$ACTIVE_UPSTREAM:127.0.0.1:8001}
+	}
+	handle /live {
+		reverse_proxy {$ACTIVE_UPSTREAM:127.0.0.1:8001}
+	}
+	handle {
+		reverse_proxy frontend:3000
+	}
+}

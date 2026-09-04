@@ -1,0 +1,55 @@
+backend:
+  replicaCount: 2
+  image:
+    repository: auri-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 2Gi
+  env:
+    APP_ENV: production
+    AI_MODE: strict_private
+    OLLAMA_BASE_URL: http://ollama:11434
+worker:
+  replicaCount: 2
+  image:
+    repository: auri-backend
+    tag: latest
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 4Gi
+frontend:
+  replicaCount: 2
+  image:
+    repository: auri-frontend
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 3000
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: auri.example.com
+postgresql:
+  enabled: true
+redis:
+  enabled: true
+qdrant:
+  enabled: true
+ollama:
+  enabled: true
+minio:
+  enabled: true
