@@ -28,6 +28,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Verify build context
+        run: |
+          test -f backend/Dockerfile
+          test -f frontend/Dockerfile
+          test -f backend/requirements.txt
+          test -f frontend/package.json
+          echo "Build context OK"
+
       - name: Set image tags
         id: meta
         run: |
@@ -62,23 +70,29 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy via SSH (optional)
-        if: ${{ secrets.DEPLOY_HOST != '' && secrets.DEPLOY_SSH_KEY != '' }}
-        env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/auri' }}
+      - name: Deploy via SSH
+        if: env.DEPLOY_HOST != '' && env.DEPLOY_SSH_KEY != ''
         run: |
+          set -euo pipefail
+          TARGET_PATH="${DEPLOY_PATH:-/opt/auri}"
           mkdir -p ~/.ssh
           echo "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
           ssh -i ~/.ssh/id_ed25519 "${DEPLOY_USER}@${DEPLOY_HOST}" \
-            "cd ${DEPLOY_PATH} && git pull --ff-only && ./scripts/blue-green-deploy.sh || docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build"
+            "cd ${TARGET_PATH} && git pull --ff-only && ./scripts/blue-green-deploy.sh || docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build"
+
+      - name: Skip deploy (no secrets)
+        if: env.DEPLOY_HOST == '' || env.DEPLOY_SSH_KEY == ''
+        run: echo "Deploy skipped: DEPLOY_HOST / DEPLOY_SSH_KEY not configured (see docs/CI_SECRETS.md)"
 
       - name: Summary
-        run: echo "Deploy finished. See docs/CI_SECRETS.md"
+        run: echo "Deploy finished for env=${{ github.event.inputs.environment || 'production' }}"
