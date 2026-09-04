@@ -2,7 +2,7 @@ import type { Dictionary } from "./en";
 
 const th: Dictionary = {
   appName: "AURI.AI",
-  tagline: "ผู้ช่วยประชุมด้วย AI ที่ให้ความสำคัญกับความเป็นส่วนตัว",
+  tagline: "ผู้ช่วย AI สำหรับการประชุมที่ให้ความสำคัญกับความเป็นส่วนตัว",
   nav: {
     dashboard: "แดชบอร์ด",
     meetings: "การประชุม",
@@ -25,7 +25,7 @@ const th: Dictionary = {
   },
   dashboard: {
     title: "แดชบอร์ด",
-    subtitle: "ภาพรวมการวิเคราะห์การประชุม",
+    subtitle: "ภาพรวมการประมวลผลการประชุมอัจฉริยะ",
     recentMeetings: "การประชุมล่าสุด",
     viewAll: "ดูทั้งหมด",
   },
