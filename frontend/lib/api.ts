@@ -147,7 +147,11 @@ export const api = {
     request<Record<string, unknown>>(`/api/v1/knowledge/meetings/${id}`),
 
   listTopics: () =>
-    request<{ topics: Array<{ name: string; count: number }> }>(
-      "/api/v1/knowledge/topics"
-    ),
+    request<{
+      topics: Array<{
+        name: string;
+        count: number;
+        example_meetings?: string[];
+      }>;
+    }>("/api/v1/knowledge/topics"),
 };
