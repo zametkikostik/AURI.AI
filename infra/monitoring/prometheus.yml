@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+  - job_name: auri-backend
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["host.docker.internal:8000", "backend:8000"]
+        labels:
+          service: auri-backend
+  - job_name: auri-backend-blue
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["host.docker.internal:8001"]
+        labels:
+          service: auri-backend
+          slot: blue
+  - job_name: auri-backend-green
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["host.docker.internal:8002"]
+        labels:
+          service: auri-backend
+          slot: green
